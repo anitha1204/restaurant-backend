@@ -19,4 +19,4 @@ const user = new mongoose.Schema({
 });
 
 const userDB = mongoose.model("ani", user);
-module.exports = userDB;
+module.exports = userDB;
