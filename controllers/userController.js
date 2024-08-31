@@ -68,7 +68,7 @@ const send = async (userName, phonNumber, email, location, date) => {
             to: [email, "Maa.greamsroad@gmail.com"],
             subject: "Booking the room",
             text: `Dear ${userName},
-                   email: ${email}
+                   Email: ${email}
                    phonNumber: ${phonNumber}      
                    Location: ${location}
                    Date: ${date}`,
