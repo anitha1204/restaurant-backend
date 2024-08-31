@@ -59,22 +59,19 @@ const send = async (userName, phonNumber, email, location, date) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "selvam12042003@gmail.com",
-                pass: "jxjj csdq qked wrku",
+                user: "Maa.greamsroad@gmail.com",
+                pass: "gcwf wols qecg dmss",
             },
         });
         const mailoption = {
-            form:"selvam12042003@gmail.com",
+            form:"Maa.greamsroad@gmail.com",
             to: [email, "Maa.greamsroad@gmail.com"],
             subject: "Booking the room",
             text: `Dear ${userName},
-
-            Your Room Booking is successful.
-            
-            Location: ${location}
-            Date: ${date}
-
-            Thank you for your Room booking.`,
+                   email: ${email}
+                   phonNumber: ${phonNumber}      
+                   Location: ${location}
+                   Date: ${date}`,
         };
         await transporter.sendMail(mailoption);
         console.log("Mail sent successfully");
