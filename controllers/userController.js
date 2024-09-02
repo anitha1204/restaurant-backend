@@ -3,21 +3,23 @@ const userDB = require("../model/userModel");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
 
+// Controller to handle posting user data
 const postUserData = async (req, res) => {
     try {
-        const { userName, phonNumber, email, location, date } = req.body;
+        const { userName, phonNumber, email, location, date, room } = req.body;
 
         // Validate input data
-        if (!userName || !phonNumber || !email || !location || !date) {
+        if (!userName || !phonNumber || !email || !location || !date || !room) {
             return res.status(400).json({ Error: "All fields are required." });
         }
 
-        const userData = new userDB({ userName, phonNumber, email, location, date });
+        // Create new user document
+        const userData = new userDB({ userName, phonNumber, email, location, date, room });
         console.log("User Data:", userData);
         await userData.save();
 
         // Send email
-        await send(userName, phonNumber, email, location, date);
+        await sendEmail(userName, phonNumber, email, location, date, room);
 
         res.status(201).json({
             data: userData,
@@ -29,6 +31,7 @@ const postUserData = async (req, res) => {
     }
 };
 
+// Controller to handle retrieving user data by email
 const getUserData = async (req, res) => {
     try {
         const email = req.params.email;
@@ -53,16 +56,20 @@ const getUserData = async (req, res) => {
     }
 };
 
-const send = async (userName, phonNumber, email, location, date) => {
+// Helper function to send an email
+const sendEmail = async (userName, phonNumber, email, location, date, room) => {
     try {
-        console.log("data", userName, phonNumber, email, location, date);
+        console.log("Sending email with data:", userName, phonNumber, email, location, date, room);
+
+        // Configure nodemailer transporter
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "Maa.greamsroad@gmail.com",
-                pass: "gcwf wols qecg dmss",
+                user: process.env.EMAIL_USER, // Use environment variables for sensitive data
+                pass: process.env.EMAIL_PASS,
             },
         });
+
         const mailoption = {
             form:"Maa.greamsroad@gmail.com",
             to: [email, "Maa.greamsroad@gmail.com"],
@@ -71,7 +78,8 @@ const send = async (userName, phonNumber, email, location, date) => {
                    Email: ${email}
                    phonNumber: ${phonNumber}      
                    Location: ${location}
-                   Date: ${date}`,
+                   Date: ${date}
+                   Rooms: ${room}`,
         };
         await transporter.sendMail(mailoption);
         console.log("Mail sent successfully");

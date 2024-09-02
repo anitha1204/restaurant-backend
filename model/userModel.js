@@ -6,6 +6,9 @@ const user = new mongoose.Schema({
   phonNumber: {
     type: Number,
   },
+  room: {
+    type: String,
+  },
   email: {
     type: String,
   },
